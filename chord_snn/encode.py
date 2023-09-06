@@ -153,7 +153,6 @@ class Encoder:
         self.spikes, self.encoder = self._encode()                            # encoded chromagram
         
      
-    
     def get_num_frames(self):
         num_frames = self.chromagram.shape[1]
         num_bins = self.chromagram.shape[0]
