@@ -131,15 +131,15 @@ class Chromagram:
 #TODO: Update class to work with the chroma array dictionary.
 
 class Encoder:
-    
-    def __init__(self, fn_wav):
+    def __init__(self, npy_file, Fs=44100, N=2048, H=1024,):
+
+        self.Fs = Fs                                            # sampling frequency
+        self.N = N                                              # FFT size
+        self.H = H                                              # hop size
+
+        self.chromagram = np.load(npy_file)                       # chromagram object for us to call on
         
-        chromagram = Chromagram(fn_wav)                         # chromagram object for us to call on
-        
-        self.fn_wav = fn_wav                                    # filename of wav file
-        self.num_frames = chromagram.num_frames                 # number of frames in chromagram, used to calculate interval      
-        self.num_bins = chromagram.num_bins                     # number of bins in chromagram, used to calculate dmin and dmax
-        self.time_steps = chromagram.time_steps                 # time steps in chromagram, used to calculate interval  amd subinterval_size
+        self.num_frames, self.num_bins, self.time_steps = self.get_num_frames() # get number of frames, bins and time steps
         
         self.chroma_as_list = self._get_chroma()                # chromagram as list
         
@@ -150,17 +150,24 @@ class Encoder:
             "interval": self.time_steps * self.num_frames,      # interval is the length of the song in ms
             }
         
-        self.spikes = self._encode()                            # encoded chromagram
+        self.spikes, self.encoder = self._encode()                            # encoded chromagram
         
      
+    
+    def get_num_frames(self):
+        num_frames = self.chromagram.shape[1]
+        num_bins = self.chromagram.shape[0]
+        time_steps = round( (self.H / self.Fs) * 1000, 1)
+        return num_frames, num_bins, time_steps
+    
     def _get_chroma(self):
-        chroma = Chromagram(self.fn_wav).chromagram             # chromagram as numpy array
+        chroma = self.chromagram             # chromagram as numpy array
         return chroma.tolist()
 
     def _encode(self):
         encoder = neuro.EncoderArray(self.encoder_params)       # encoder object. "neuro.EncoderArray" from framework
         spikes = encoder.get_timeseries_spikes(self.chroma_as_list) # encoded chromagram. "get_timeseries_spikes" from framework
-        return spikes    
+        return spikes, encoder  
     
 if __name__ == "__main__":
     if len(sys.argv) < 2:
