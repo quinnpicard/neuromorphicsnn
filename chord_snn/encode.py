@@ -128,6 +128,7 @@ class Chromagram:
 
         return X_norm
     
+#TODO: Update class to work with the chroma array dictionary.
 
 class Encoder:
     
