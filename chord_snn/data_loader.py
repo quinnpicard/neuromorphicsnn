@@ -15,7 +15,7 @@ class data_loader:
         self.chroma_files = self._get_files(self.destination_dir, '.npy') #We use this in training
         #labels and numerical labels
         self.labels = self._get_labels()      
-        self.y, self.root_to_num = self.create_numerical_labels(self.labels) #We use this in training
+        self.numerical_label_chord, self.numerical_label_roots = self.create_numerical_labels(self.labels) #We use this in training
         
     def _get_files(self, directory, extension):
         return [os.path.join(root, fname)
