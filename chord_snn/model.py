@@ -17,6 +17,7 @@ import eons
 from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import OneHotEncoder
 from sklearn.metrics import accuracy_score
+ 
 
 """
 Neural Network Training and Evaluation Script for Music Classification
@@ -70,14 +71,14 @@ def load_config(filename):
         print(f"Error loading config from {filename}: {e}")
         sys.exit(1)
 
-risp_config = load_config('/home/dofo/Repos/Github/neuromorphicsnn/chord_snn/config/risp.json')
-eo_params = load_config('/home/dofo/Repos/Github/neuromorphicsnn/chord_snn/config/eons.json')
+risp_config = load_config('/home/apartidalizarraga/Repos/Github/neuromorphicsnn/chord_snn/config/risp.json')
+eo_params = load_config('/home/apartidalizarraga/Repos/Github/neuromorphicsnn/chord_snn/config/eons.json')
 
 
 loader_instance = DataLoader(folders= ["minor_triad", "major_triad" ])
 
 # First, split the data into training+validation and testing sets
-X_temp, X_test, y_temp, y_test = train_test_split(loader_instance.chroma_files, loader_instance.numerical_label_types, test_size=0.2, random_state=42)
+X_temp, X_test, y_temp, y_test = train_test_split(loader_instance.chroma_files, loader_instance.numerical_label_roots, test_size=0.2, random_state=42)
 # Now, split the training+validation set into training and validation sets
 X_train, X_val, y_train, y_val = train_test_split(X_temp, y_temp, test_size=0.25, random_state=42)  # 0.25 x 0.8 = 0.2
 # One-hot encode the labels
@@ -217,7 +218,7 @@ for generation in range(max_generations):
 def save_net(net,filename):
         try:
             with open(filename, 'w') as f:
-                json.dump(net.to_json(), f)
+                json.dump(net, f)
         except Exception as e:
             print(f"Error saving network to {filename}: {e}")
 
@@ -231,4 +232,4 @@ y_test_predict = [get_prediction(proc, x) for x in X_test]
 
 # Calculate the accuracy on the test set
 test_accuracy = accuracy_score(y_test_encoded, y_test_predict)
-print(f"Accuracy on the validation set: {test_accuracy:.4f}")
+print(f"Accuracy on the Testing set: {test_accuracy:.4f}")
