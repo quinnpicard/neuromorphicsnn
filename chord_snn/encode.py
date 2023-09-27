@@ -7,7 +7,7 @@ import neuro
 
 class Chromagram:
     
-    def __init__(self, fn_wav, Fs=44100, N=2048, H=1024, gamma=None, version='CQT', norm='2'):
+    def __init__(self, fn_wav, Fs=44100, N=2048, H=1024, gamma=None, version='CQT', norm='max'):
         self.fn_wav = fn_wav
         self.Fs = Fs
         self.N = N
