@@ -1,5 +1,6 @@
 # neuromorphicsnn
-Neuromorphic SNN for Audio Analysis
+Neuromorphic SNN for Audio Analysis.
+
 chord_snn contains model developed my Adolfo Partida for key classification of piano audio samples.
 Genre_snn contains model developed by Quinn Picard for Genre classification of different song samples.
 
